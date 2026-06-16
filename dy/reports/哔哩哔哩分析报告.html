@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>哔哩哔哩（BILI / 9626.HK）段永平方法论综合分析报告</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  color: #1a1a2e;
+  background: #f5f6fa;
+  line-height: 1.75;
+}
+.report-container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+.report-header {
+  text-align: center; padding: 48px 32px 36px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 16px; margin-bottom: 32px; color: #e8e8e8;
+}
+.report-header h1 { font-size: 2rem; font-weight: 700; color: #ffffff; letter-spacing: 2px; margin-bottom: 8px; }
+.report-header .subtitle { font-size: 1rem; color: #a0c4ff; margin-bottom: 20px; }
+.report-header .meta-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 16px; }
+.report-header .meta-item { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; color: #c8d6e5; }
+.report-header .meta-item strong { color: #ffffff; }
+.section {
+  background: #ffffff; border-radius: 12px; padding: 32px 36px; margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #eef1f5;
+}
+.section-title {
+  font-size: 1.35rem; font-weight: 700; color: #0f3460; margin-bottom: 20px;
+  padding-bottom: 10px; border-bottom: 2px solid #e8edf3;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title .step-badge {
+  display: inline-block; background: linear-gradient(135deg, #e94560, #0f3460);
+  color: #fff; font-size: 0.7rem; font-weight: 600; padding: 2px 10px;
+  border-radius: 20px; letter-spacing: 0.5px;
+}
+.section-subtitle { font-size: 1.1rem; font-weight: 600; color: #16213e; margin: 24px 0 12px; }
+.section-subtitle:first-child { margin-top: 0; }
+p { margin-bottom: 12px; }
+p:last-child { margin-bottom: 0; }
+.table-wrapper { overflow-x: auto; margin-bottom: 16px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+thead th { background: #f0f4f8; color: #1a1a2e; font-weight: 600; text-align: left; padding: 10px 14px; border-bottom: 2px solid #dce3ec; }
+tbody td { padding: 10px 14px; border-bottom: 1px solid #eef1f5; vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #f8faff; }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+.tag-green  { background: #d4edda; color: #155724; }
+.tag-red    { background: #f8d7da; color: #721c24; }
+.tag-yellow { background: #fff3cd; color: #856404; }
+.tag-blue   { background: #d1ecf1; color: #0c5460; }
+.tag-gray   { background: #e2e3e5; color: #383d41; }
+blockquote {
+  margin: 16px 0; padding: 14px 20px; background: #f8f9fa;
+  border-left: 4px solid #0f3460; border-radius: 0 8px 8px 0; color: #2c3e50;
+}
+blockquote p { margin-bottom: 4px; }
+blockquote p:last-child { margin-bottom: 0; }
+.code-block {
+  background: #1a1a2e; color: #e8e8e8; border-radius: 10px; padding: 18px 22px;
+  margin: 16px 0; font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  font-size: 0.85rem; line-height: 1.6; overflow-x: auto; white-space: pre;
+}
+.code-block .pass { color: #69db7c; }
+.code-block .fail { color: #ff6b6b; }
+.code-block .warn { color: #ffd43b; }
+.code-block .dim  { color: #868e96; }
+.code-block .highlight { color: #74c0fc; }
+.card {
+  background: #f8faff; border: 1px solid #e8edf3; border-radius: 10px;
+  padding: 18px 22px; margin: 14px 0;
+}
+.card h4 { font-size: 0.95rem; font-weight: 600; color: #0f3460; margin-bottom: 8px; }
+.verdict-pass { color: #28a745; font-weight: 600; }
+.verdict-fail { color: #dc3545; font-weight: 600; }
+.verdict-warn { color: #e9a600; font-weight: 600; }
+hr { border: none; border-top: 1px solid #e8edf3; margin: 24px 0; }
+.report-footer {
+  text-align: center; padding: 24px 32px; margin-top: 12px;
+  font-size: 0.8rem; color: #8899aa; border-top: 1px solid #e8edf3;
+}
+.result-box { padding: 16px 20px; border-radius: 10px; margin: 16px 0; font-size: 0.92rem; border-left: 4px solid; }
+.result-box.pass   { background: #e8f5e9; border-color: #28a745; color: #1e4620; }
+.result-box.fail   { background: #fbe9e7; border-color: #dc3545; color: #641e16; }
+.result-box.warn   { background: #fff8e1; border-color: #e9a600; color: #5d4037; }
+.result-box.info   { background: #e3f2fd; border-color: #1976d2; color: #0d3b66; }
+.checklist { list-style: none; padding: 0; }
+.checklist li { padding: 6px 0; display: flex; align-items: flex-start; gap: 8px; font-size: 0.92rem; }
+.checklist li .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+.checklist li .icon.pass  { color: #28a745; }
+.checklist li .icon.fail  { color: #dc3545; }
+.checklist li .icon.warn  { color: #e9a600; }
+.checklist li .icon.neutral { color: #6c757d; }
+.dim-row { display: flex; gap: 20px; flex-wrap: wrap; margin: 16px 0; }
+.dim-card { flex: 1; min-width: 200px; padding: 16px 18px; border-radius: 10px; border: 1px solid #e8edf3; background: #fafbfc; }
+.dim-card .dim-name { font-size: 0.82rem; font-weight: 600; color: #667788; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.dim-card .dim-score { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+.dim-card .dim-note { font-size: 0.85rem; color: #667788; }
+@media (max-width: 720px) {
+  .report-container { padding: 16px 12px 40px; }
+  .report-header { padding: 28px 16px 24px; }
+  .report-header h1 { font-size: 1.4rem; }
+  .section { padding: 20px 16px; }
+  .section-title { font-size: 1.1rem; }
+  .meta-grid { flex-direction: column; align-items: center; }
+}
+@media print {
+  body { background: #fff; }
+  .report-container { max-width: none; padding: 0; }
+  .section { box-shadow: none; break-inside: avoid; page-break-inside: avoid; }
+  .report-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .code-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div class="report-container">
+
+<!-- ===== HEADER ===== -->
+<div class="report-header">
+  <h1>哔哩哔哩（BILI / 9626.HK）段永平方法论综合分析报告</h1>
+  <div class="subtitle">段永平方法论 · 综合分析报告</div>
+  <div class="meta-grid">
+    <div class="meta-item"><strong>分析依据</strong> 段永平投资问答录及网易博客原话整理（dy/knowledge/ 目录下6个文件）</div>
+    <div class="meta-item"><strong>方法论版本</strong> v3.0 双路径决策模型 + 环境变化检测</div>
+    <div class="meta-item"><strong>分析日期</strong> 2026-06-16</div>
+    <div class="meta-item"><strong>当前股价</strong> 美股 BILI $17.85（市值约74.4亿美元）；港股 9626.HK HK$135.30（市值约564亿港元）</div>
+    <div class="meta-item"><strong>远期PE</strong> 约16-17倍</div>
+  </div>
+</div>
+
+<!-- ===== 声明 ===== -->
+<div class="section">
+  <p>本报告是段永平方法论的应用和推演。段永平本人没有公开评论过哔哩哔哩。报告中的"段永平可能会说"部分为模拟推演，不代表段永平本人的观点。所有引用段永平的原话均来自 <code>dy/knowledge/</code> 目录下的原文整理。</p>
+</div>
+
+<!-- ===== 第一部分：环境变化检测 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 0</span> 第一部分：环境变化检测</h2>
+
+  <h3 class="section-subtitle">五维颠覆性信号扫描</h3>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">① 技术变革：AI对内容行业的影响</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>评估</th></tr></thead>
+    <tbody>
+      <tr><td>AI对内容分发</td><td>AI正在改变内容推荐和发现方式。B站2026年增加10亿资本开支投入AI应用层（视频理解、分发、创作），陈睿称AI是"十倍放大的历史性机遇"</td></tr>
+      <tr><td>AI对内容生产</td><td>AI辅助创作工具降低创作门槛（UP主日均投稿量同比+19%），但AI生成内容的社区接受度待验证</td></tr>
+      <tr><td><strong>判断</strong></td><td><strong>改良性变化</strong>——AI没有颠覆B站的核心逻辑（社区+中长视频），反而可能放大其内容生态优势</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">② 消费者行为变化</h4>
+  <ul>
+    <li>短视频对长视频持续侵蚀，B站日均使用时长119分钟仍处高位（同比+8%）</li>
+    <li>Z世代用户信息获取渠道碎片化，但B站核心用户忠诚度较高</li>
+    <li><strong>判断</strong>：有变化但改良性——B站的社区壁垒（弹幕文化、UP主生态）在特定领域不可替代</li>
+  </ul>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">③ 竞争格局变化</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>平台</th><th>用户渗透率（2025年）</th><th>竞争定位</th></tr></thead>
+    <tbody>
+      <tr><td>抖音</td><td>46.8%</td><td>短视频+电商，绝对领先</td></tr>
+      <tr><td>快手</td><td>35.9%</td><td>下沉市场，老铁文化</td></tr>
+      <tr><td>视频号</td><td>31.7%</td><td>微信生态，增长最快</td></tr>
+      <tr><td>小红书</td><td>33.2%</td><td>生活方式社区</td></tr>
+      <tr><td><strong>B站</strong></td><td><strong>28.0%</strong></td><td><strong>中长视频+社区，差异化定位</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <ul>
+    <li>按用户规模B站处于第三梯队（约9%份额），但竞争维度不同</li>
+    <li>视频号依托微信生态崛起是最大变量</li>
+  </ul>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">④ 监管/政策变化</h4>
+  <p>游戏版号恢复但节奏不确定，内容审核常态化。<strong>周期性变化，非结构性</strong>。</p>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">⑤ 全球化/供应链</h4>
+  <p>海外版BiliBili尚在早期，主要市场在中国。<strong>影响有限</strong>。</p>
+
+  <h3 class="section-subtitle">环境变化检测结论</h3>
+  <div class="code-block"><span class="dim">颠覆级别：</span><span class="pass">☑ 有变化但改良性 → 传统框架可用，在相关维度上需调整假设</span>
+          <span class="dim">□ 无颠覆 → 框架安全使用</span>
+          <span class="dim">□ 结构性颠覆 → 框架外思考</span></div>
+
+  <div class="result-box info">⚠️ 段永平没有公开评论过B站，所以不存在"引用段永平过去判断"的问题。但段永平分析过腾讯（网络效应）和网易（游戏业务），思维方法可借鉴。</div>
+</div>
+
+<!-- ===== 第二部分：公司类型判断 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 0.5</span> 第二部分：公司类型判断</h2>
+
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>诊断问题</th><th>回答</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>这个生意的"好"是显而易见的吗？</td><td><span class="tag tag-red">❌ 不是</span></td><td>B站模式复杂（四块收入），长期亏损，近期才盈利</td></tr>
+      <tr><td>创始人明天离职，3年后会怎样？</td><td><span class="tag tag-red">❌ 大幅下滑</span></td><td>陈睿是灵魂人物，社区文化和战略高度依赖他</td></tr>
+      <tr><td>护城河是结构性还是依赖创始人？</td><td><span class="tag tag-yellow">⚠️ 混合</span></td><td>社区网络效应有结构性，但商业化平衡依赖陈睿判断</td></tr>
+      <tr><td>模式在成熟还是新兴行业？</td><td>新兴/演化中</td><td>视频+社区+游戏+AI，行业仍在快速变化</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="result-box info"><strong>判断结果：B型（创始人优先型）</strong><br><br>
+  <strong>为什么这很重要：</strong>如果把B站当A型分析——只看财务数据和商业模式——你会看到一家"刚盈利、用户增速放缓、四块业务没有一块特别强"的公司，然后直接跳过。但通过创始人视角，可能会看到不一样的东西。</div>
+</div>
+
+<!-- ===== 第三部分：排除测试 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 1</span> 第三部分：排除测试</h2>
+
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>问题</th><th>判断</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>这个生意我真正懂吗？</td>
+        <td><span class="tag tag-yellow">⚠️ 中等</span></td>
+        <td>社区生态有独特壁垒，但四块复杂收入模式（游戏+广告+增值+IP）需进一步理解。游戏业务是段永平熟悉的领域（通过网易案例）</td>
+      </tr>
+      <tr>
+        <td>生意模式一眼就能看出好吗？</td>
+        <td><span class="tag tag-yellow">⚠️ 不明显</span></td>
+        <td>2025年首次盈利，毛利率从24%提升到37%是积极信号，但PE 36倍（TTM）和3.9%的净利率并不"一眼好"</td>
+      </tr>
+      <tr>
+        <td>管理层有不本分迹象吗？</td>
+        <td><span class="tag tag-green">✅ 无明显问题</span></td>
+        <td>陈睿表现出对社区的真诚、自我反思能力，无财务造假或大股东频繁套现</td>
+      </tr>
+      <tr>
+        <td>有致命Stop Doing违规吗？</td>
+        <td><span class="tag tag-green">✅ 无明显违规</span></td>
+        <td>B站有明显"Stop Doing"——不开贴片广告、不破坏社区调性</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="result-box pass"><strong>排除测试结论：✅ 有条件通过</strong><br>B站不是可以直接跳过的公司，也不是"一眼就能看出好"的类型。需要深入创始人维度才能判断。</div>
+</div>
+
+<!-- ===== 第四部分：生意叙事 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 2</span> 第四部分：生意叙事</h2>
+
+  <div class="result-box info">写不出300字说清这个生意怎么赚钱 = 没懂</div>
+
+  <p>B站是一个以<strong>中长视频为核心载体的年轻人文化社区</strong>。生意逻辑分四层：</p>
+
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>收入来源</th><th>占比（2025年）</th><th>增长趋势</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>增值服务</strong></td><td>39%（119.3亿）</td><td>+8%</td><td>直播打赏、大会员付费。核心是"为爱发电"——用户因认同社区而付费</td></tr>
+      <tr><td><strong>广告</strong></td><td>35%（100.6亿）</td><td><span class="verdict-pass">+23%</span></td><td>品牌广告+信息流。拥有中国最优质的高学历年轻用户，对AI/数码/汽车等高客单价广告主极具吸引力</td></tr>
+      <tr><td><strong>游戏</strong></td><td>21%（63.9亿）</td><td>+14%（2025全年）/ <span class="verdict-fail">-12%（2026Q1连续下滑）</span></td><td>代理运营+联合发行。《三国：谋定天下》是主要贡献者，但缺乏稳定爆款管线</td></tr>
+      <tr><td><strong>IP衍生及其他</strong></td><td>少量</td><td>—</td><td>围绕B站自有IP做衍生品，体量不大</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><strong>核心竞争力：</strong>不是任何一个单块收入，而是<strong>"社区"</strong>——用户因为弹幕文化、UP主生态、圈层归属感而留下。这个社区是广告主愿意付费、用户愿意打赏、游戏宣发效率高的底层原因。</p>
+
+  <p><strong>核心问题：</strong>四块收入中只有广告有明显增长势头，游戏在萎缩，增值服务增长平缓。用户增速见顶（MAU 3.76亿，同比+2%），离"4亿月活"目标还有距离。</p>
+</div>
+
+<!-- ===== 第五部分：深度分析 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 3</span> 第五部分：深度分析</h2>
+
+  <!-- 5-A：创始人深潜 -->
+  <h3 class="section-subtitle">5-A：创始人深潜——陈睿（Step 3a）</h3>
+  <div class="result-box info">对于B型公司，理解创始人本身就是理解生意的钥匙。</div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">创始人画像</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>评估</th></tr></thead>
+    <tbody>
+      <tr><td><strong>个人背景</strong></td><td>1978年生，四川人。金山软件7年（雷军技术助理），猎豹移动联合创始人</td></tr>
+      <tr><td><strong>加入B站</strong></td><td>2011年天使投资，2014年全职加入，放弃猎豹价值约1亿的期权</td></tr>
+      <tr><td><strong>角色</strong></td><td>董事长兼CEO，负责战略方向和社区文化；COO李旎负责商业化落地</td></tr>
+      <tr><td><strong>年龄</strong></td><td>48岁 → 剩余任期约15-20年，企业家复利中等偏高</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">产品理念共鸣</h4>
+  <p>陈睿的产品哲学：<strong>"社区优先于商业化"</strong></p>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>原则</th><th>具体表现</th></tr></thead>
+    <tbody>
+      <tr><td>不做贴片广告</td><td>2014年承诺至今坚守——一个明确的Stop Doing</td></tr>
+      <tr><td>"打死也不做贴吧"</td><td>刻意降低社交属性，保持内容驱动的社区氛围</td></tr>
+      <tr><td>算法导向</td><td>为关注数优化（创作者导向），而非为播放量优化</td></tr>
+      <tr><td>社区满意度优先</td><td>"单个用户满意度不如社区满意度重要"</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote>
+    <p><strong>参照段永平标准：</strong>陈睿的产品理念有真实感，不是营销话术。类似于段永平评价马化腾"人不错"的感觉——不是乔布斯级别的产品天才，而是一个<strong>务实、本分、有长期视野的产品人</strong>。</p>
+  </blockquote>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">企业家共情</h4>
+  <p><strong>关键问题：如果我是陈睿，我能做出B站今天的决策吗？</strong></p>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>决策</th><th>评价</th></tr></thead>
+    <tbody>
+      <tr><td>长期亏损不拆社区（2018-2024）</td><td><span class="verdict-pass">✅ 有定力</span>——顶着投资人压力没有大量增加广告位，换我大概率做不到</td></tr>
+      <tr><td>"破圈"决策（2020年）</td><td><span class="verdict-pass">✅ 正确但冒险</span>——从二次元走向泛知识，用户天花板从几千万到3.76亿，同时保持"加速但不失控"</td></tr>
+      <tr><td>主动降速</td><td><span class="verdict-pass">✅ 理性</span>——用户增长遇瓶颈时转向精细化运营和盈利</td></tr>
+      <tr><td>自我反思</td><td><span class="verdict-pass">✅ 本分</span>——"老板是很难成长的，因为没人敢骂老板。如果老板突然成长了，那他一定彻底地否定过自己"——段永平框架中得分很高</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">创始人分类</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>类型</th><th>评估</th></tr></thead>
+    <tbody>
+      <tr><td><strong>造钟人</strong></td><td><span class="tag tag-yellow">⚠️ 尚未完成</span>——组织文化还高度依赖陈睿个人</td></tr>
+      <tr><td><strong>产品天才</strong></td><td><span class="tag tag-yellow">⚠️ 中等</span>——有清晰产品理念，但与王宁/乔布斯有差距</td></tr>
+      <tr><td><strong>本分人</strong></td><td><span class="tag tag-green">✅ 正面</span>——多年言行一致</td></tr>
+      <tr><td><strong>年轻有为（复利）</strong></td><td><span class="tag tag-green">✅ 中等偏高</span>——48岁，15-20年任期，认知有进化</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">创始人深潜总结</h4>
+  <div class="code-block"><span class="dim">□ 我对这个创始人的理解度：中等偏高</span>
+<span class="dim">□ 如果我是他，能否做出今天B站的决策？→ 大概率不能（尤其是长期顶着亏损不破坏社区）</span>
+<span class="dim">□ 创始人的认知在过去2-3年有进化吗？→ 有（对商业化的态度、对AI的判断）</span>
+<span class="dim">□ 他在"Stop Doing"上的表现：有原则，但不够极致</span>
+<span class="dim">□ 他的"企业家复利"：48岁，15-20年任期，认知在进化 → 中等偏高</span>
+<span class="dim">□ 总的来说：他值得我信任吗？→ 可以信任，但还不是"顶级"级别</span></div>
+
+  <hr>
+
+  <!-- 5-B：商业模式深度分析 -->
+  <h3 class="section-subtitle">5-B：商业模式深度分析（Step 3b，通过创始人视角重审）</h3>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">护城河分析</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>护城河类型</th><th>评估</th><th>段永平框架评价</th></tr></thead>
+    <tbody>
+      <tr><td><strong>双边网络效应</strong></td><td><span class="tag tag-green">✅</span></td><td>UP主与用户相互吸引。200万+月活UP主，3.76亿MAU。但强度不如微信。正面但非"顶级"</td></tr>
+      <tr><td><strong>社区文化壁垒</strong></td><td><span class="tag tag-green">✅</span></td><td>弹幕文化+答题准入（3亿+用户），中国互联网中最独特的社区氛围。独特且有价值</td></tr>
+      <tr><td><strong>品牌认知</strong></td><td><span class="tag tag-green">✅</span></td><td>"B站=年轻优质内容"的品牌心智已建立。有但未达茅台级别</td></tr>
+      <tr><td><strong>内容生态</strong></td><td><span class="tag tag-green">✅</span></td><td>15年中长视频内容积累，转换成本较高。正面</td></tr>
+      <tr><td><strong>用户粘性</strong></td><td><span class="tag tag-green">✅</span></td><td>日均时长119分钟，DAU/MAU≈30%，行业高水平。正面</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>护城河宽度：中等偏宽</strong>。在"中长视频深度社区"这个细分赛道上几乎没有直接对手。问题在于这个细分赛道本身的大小以及用户行为是否持续向短视频迁移。</p>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">定价权测试 ⭐（段永平最看重的维度）</h4>
+  <p><strong>段永平测试法</strong>："如果竞争对手降价50%，核心客户会跑吗？"</p>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>业务</th><th>定价权评估</th></tr></thead>
+    <tbody>
+      <tr><td><strong>大会员</strong>（增值服务）</td><td><span class="tag tag-yellow">⚠️ 弱</span>——内容版权非B站独占，用户可去其他平台</td></tr>
+      <tr><td><strong>广告</strong></td><td><span class="tag tag-yellow">⚠️ 弱</span>——广告主迁移成本低，靠流量和算法效率竞争</td></tr>
+      <tr><td><strong>游戏</strong></td><td><span class="tag tag-yellow">⚠️ 弱</span>——单款游戏定价权取决于产品本身，非B站平台</td></tr>
+      <tr><td><strong>UP主生态</strong></td><td><span class="tag tag-yellow">⚠️ 弱</span>——UP主可多平台分发内容</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="result-box warn"><strong>结论：☑️ 弱定价权。</strong> 这是B站商业模式最大的短板。与段永平喜欢的公司（茅台提价不影响销量、苹果用户对价格不敏感）形成鲜明对比。</div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">利润质量分析</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>指标</th><th>数据</th><th>评价</th></tr></thead>
+    <tbody>
+      <tr><td><strong>毛利率</strong></td><td>36.6%（2025），连续14个季度提升</td><td>中等，远好于2023年的24%，但不够"高毛利"</td></tr>
+      <tr><td><strong>净利率</strong></td><td>3.9%（2025年首次转正）</td><td><span class="tag tag-red">低</span>——11.9亿净利润 vs 303亿营收</td></tr>
+      <tr><td><strong>经营现金流</strong></td><td>71.5亿（2025）</td><td><span class="tag tag-green">良好</span>，优于净利润11.9亿</td></tr>
+      <tr><td><strong>自由现金流（FCF）</strong></td><td>66.3亿（2025）</td><td><span class="tag tag-green">良好</span>，FCF/营收≈22%</td></tr>
+      <tr><td><strong>预收款</strong></td><td>占比不高</td><td>没有茅台那种"先收钱后交货"的模式</td></tr>
+      <tr><td><strong>资本支出</strong></td><td>2026年计划增加10亿AI投入</td><td>增加中，可能影响短期FCF</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote>
+    <p><strong>段永平式判断：</strong>"如果人们明白大部分生意实际上是没啥预收款的时候，人们会很喜欢茅台的。" B站没有预收款优势，FCF虽然转正，但并非模式自带，是通过持续的成本控制和广告增长实现的。</p>
+  </blockquote>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">长坡厚雪</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr><td><strong>长坡（行业空间）</strong></td><td><span class="tag tag-yellow">⚠️ 坡不够长</span>——中国视频内容市场进入存量博弈，B站细分赛道天花板约4-5亿MAU</td></tr>
+      <tr><td><strong>厚雪（护城河+盈利）</strong></td><td><span class="tag tag-yellow">⚠️ 雪不够厚</span>——社区壁垒够厚，但盈利薄（净利率3.9%）</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>长坡厚雪评分：中等坡、中等雪</strong>——不是段永平心目中"长长的坡，厚厚的雪"的类型。</p>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">一票否决信号检查</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>一票否决信号</th><th>B站情况</th></tr></thead>
+    <tbody>
+      <tr><td>产品严重同质化</td><td><span class="tag tag-yellow">⚠️</span> 和抖音/快手有一定差异，但用户时间争夺是同质的</td></tr>
+      <tr><td><strong>没有定价权</strong></td><td><span class="tag tag-red">✅ 是——核心问题</span></td></tr>
+      <tr><td>"性价比"是核心卖点</td><td><span class="tag tag-green">❌ 不是</span></td></tr>
+      <tr><td>高负债+高ROE</td><td><span class="tag tag-green">❌</span> 负债低，ROE未转正暂无意义</td></tr>
+      <tr><td>重资产+低毛利</td><td><span class="tag tag-yellow">⚠️</span> 轻资产，但毛利36.6%不算高</td></tr>
+      <tr><td>行业空间在缩小</td><td><span class="tag tag-green">❌</span> 行业仍增长但增速放缓</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">商业模式综合评分</h4>
+  <div class="result-box warn"><strong>中等</strong>——有护城河，但护城河不宽；有差异化，但差异化的价值被竞争和定价权缺失削弱。不是段永平会"一眼看出好生意"的类型。</div>
+
+  <hr>
+
+  <!-- 5-C：企业文化诊断 -->
+  <h3 class="section-subtitle">5-C：企业文化诊断（Step 3c）</h3>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">本分评估</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>评估</th><th>证据</th></tr></thead>
+    <tbody>
+      <tr><td><strong>求责于己</strong></td><td><span class="tag tag-green">✅ 正面</span></td><td>陈睿多次公开反思"花太多时间在业务细节""对引入人不够重视"</td></tr>
+      <tr><td><strong>不赚人便宜</strong></td><td><span class="tag tag-green">✅ 正面</span></td><td>无剥削UP主/供应商丑闻，激励体系健康</td></tr>
+      <tr><td><strong>平常心</strong></td><td><span class="tag tag-green">✅ 正面</span></td><td>不追风口、不炒概念、不为了短期数据牺牲长期价值</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">造钟人测试</h4>
+  <div class="code-block"><span class="dim">创始人今天退休 → 3年后B站表现？ → </span><span class="warn">大幅下滑（造钟尚未完成）</span></div>
+  <p>陈睿自己也承认"对引入人和培养人仍然不够重视"。</p>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">Stop Doing List（不为清单）</h4>
+  <ul>
+    <li><span class="verdict-pass">✅</span> <strong>不做贴片广告</strong>（2014年承诺至今坚守）</li>
+    <li><span class="verdict-pass">✅</span> <strong>不做纯流量生意</strong></li>
+    <li><span class="verdict-pass">✅</span> <strong>不破坏社区调性</strong>（限制低质内容、维护弹幕氛围）</li>
+  </ul>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">企业文化总体评分</h4>
+  <div class="result-box pass"><strong>中等偏高</strong>——有清晰的价值观和Stop Doing，文化不错但验证时间不够长，造钟未完成。</div>
+
+  <hr>
+
+  <!-- 5-D：价格/估值分析 -->
+  <h3 class="section-subtitle">5-D：价格/估值分析（Step 3d，权重30%）</h3>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">"毛估估"框架</h4>
+  <p><strong>利润基础（2025年实际）：</strong></p>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>指标</th><th>金额</th></tr></thead>
+    <tbody>
+      <tr><td>GAAP净利润</td><td>11.9亿人民币</td></tr>
+      <tr><td>经调整净利润</td><td>25.9亿人民币</td></tr>
+      <tr><td>自由现金流（FCF）</td><td>66.3亿人民币</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <blockquote><p><strong>段永平说：</strong>PE是历史数据，关键是未来盈利能力。段永平式毛估估不用复杂DCF，而是用简单逻辑判断。</p></blockquote>
+
+  <p><strong>段永平式毛估估：</strong></p>
+  <div class="code-block"><span class="dim">第一层：看净利润</span>
+  港股市值约530亿人民币
+  2025年经调整净利润25.9亿 → 调整后PE约20倍
+  2026E净利润35-40亿 → 远期PE约13-15倍
+
+  <span class="dim">段永平参考线：PE=12"可以了"，PE=15"长期平均"</span>
+  <span class="warn">→ 13-15倍远期PE处于合理范围，但前提是增长能兑现。</span>
+
+<span class="dim">第二层：看FCF（段永平更看重真金白银）</span>
+  2025年FCF 66.3亿，是GAAP净利润的5.6倍
+  <span class="pass">→ 如果FCF能持续在50亿+级别，当前市值对应~10倍FCF</span>
+  <span class="warn">→ 这个估值有吸引力——前提是FCF可持续</span>
+
+<span class="dim">第三层：机会成本比较</span>
+  vs 茅台（A股约25-30倍PE，确定性极高）→ B站确定性明显更低
+  vs 苹果（美股约25-28倍PE，生态系统锁定）→ 确定性差距明显
+  vs 腾讯（约15-18倍PE）→ 估值差不多，但体量和确定性远不如腾讯</div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">估值确定性等级</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr><td>商业模式确定性</td><td>中等偏低（定价权弱、游戏波动、用户增长见顶）</td></tr>
+      <tr><td>创始人确定性</td><td>中等偏高（陈睿可信但非顶级）</td></tr>
+      <tr><td>文化确定性</td><td>中等（造钟未完成）</td></tr>
+      <tr><td><strong>综合确定性</strong></td><td><span class="tag tag-yellow">中等</span></td></tr>
+      <tr><td><strong>估值等级</strong></td><td><span class="tag tag-yellow">合理偏低</span>——远期PE 13-17倍在合理范围，但"便宜"的前提是盈利增长能兑现</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="result-box warn">⚠️ <strong>段永平式提醒：</strong>"pe很低的公司很可能是有问题的公司。"——低PE不一定意味着便宜，可能反映市场看到了你不知道的风险。B站的远期PE较低，但需要问：市场是不是在对游戏下滑或用户天花板定价？</div>
+</div>
+
+<!-- ===== 第六部分：实地验证 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 4</span> 第六部分：实地验证</h2>
+
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>验证层次</th><th>行动</th><th>发现</th></tr></thead>
+    <tbody>
+      <tr><td><strong>产品体验</strong></td><td>使用B站产品</td><td>内容丰富，弹幕氛围独特。但商业化痕迹明显（信息流广告、开屏广告、视频内嵌广告）</td></tr>
+      <tr><td><strong>用户口碑</strong></td><td>观察用户评价</td><td>年轻用户仍认为B站"最有内容深度"。负面反馈：广告增多、UP主"恰饭"现象普遍、破圈后社区稀释</td></tr>
+      <tr><td><strong>竞争对比</strong></td><td>与抖音/小红书对比</td><td>在"深度内容"维度上确实没有对手。抖音做知识但推流偏短平快；小红书缺乏弹幕文化</td></tr>
+      <tr><td><strong>关键假设验证</strong></td><td>数据交叉验证</td><td>用户粘性<span class="verdict-pass">✅</span>（时长119分钟）；UP主生态<span class="verdict-pass">✅</span>（千粉UP主+30%）；广告增长<span class="verdict-warn">⚠️</span>（依赖AI行业投放）；游戏回暖<span class="verdict-fail">❌</span>（连续三季下滑）</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ===== 第七部分：综合判断 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 5</span> 第七部分：综合判断</h2>
+
+  <h3 class="section-subtitle">三维度方向一致性</h3>
+  <div class="dim-row">
+    <div class="dim-card">
+      <div class="dim-name">商业模式</div>
+      <div class="dim-score" style="color:#e9a600;">中等</div>
+      <div class="dim-note">有护城河但定价权弱，盈利刚转正 <span style="color:#28a745;">⬆️</span> 改善中</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-name">企业文化</div>
+      <div class="dim-score" style="color:#28a745;">中等偏高</div>
+      <div class="dim-note">陈睿本分，有Stop Doing <span style="color:#667788;">➡️</span> 稳定</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-name">价格</div>
+      <div class="dim-score" style="color:#e9a600;">合理偏低</div>
+      <div class="dim-note">远期PE 13-17倍 <span style="color:#667788;">➡️</span> 合理但不确定</div>
+    </div>
+  </div>
+  <p><strong>三维方向判断：</strong>商业模式改善方向（毛利率↑、广告↑、FCF↑）与企业文化稳定方向一致。但<strong>定价权缺失</strong>是结构性问题，会限制长期回报率。</p>
+
+  <h3 class="section-subtitle">条件逻辑链总结</h3>
+  <div class="code-block"><span class="dim">Step 0: 环境变化检测 → </span><span class="pass">✅ 改良性变化，框架可用</span>
+<span class="dim">Step 0.5: 公司类型 → </span><span class="pass">✅ B型（创始人优先）</span>
+    ↓
+<span class="dim">Step 1: 排除测试 → </span><span class="pass">✅ 有条件通过</span>
+    ↓
+<span class="dim">Step 3a: 创始人深潜 → </span><span class="pass">✅ 陈睿可信，但不是顶级</span>
+    ↓
+<span class="dim">Step 3b: 商业模式（重审）→ </span><span class="warn">⚠️ 中等（有护城河但定价权弱）</span>
+    ↓
+<span class="dim">Step 3c: 企业文化 → </span><span class="pass">✅ 中等偏高</span>
+    ↓
+<span class="dim">Step 3d: 价格 → </span><span class="warn">⚠️ 合理偏低但确定性不足</span>
+    ↓
+<span class="dim">Step 4: 实地验证 → </span><span class="warn">⚠️ 关键假设有待验证</span>
+    ↓
+<span class="dim">Step 5: 综合判断 → </span><span class="highlight">📌 可关注，但还不是买入的时候</span></div>
+
+  <h3 class="section-subtitle">最终判断</h3>
+  <div class="code-block"><span class="dim">☐ 买入  ☐ 重仓  </span>
+<span class="pass">✅ 关注（等待认知升级）  </span><span class="dim">☐ 不投</span></div>
+</div>
+
+<!-- ===== 第八部分：10年视角验证 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 6</span> 第八部分：10年视角验证</h2>
+
+  <h3 class="section-subtitle">1. 10年后护城河更宽还是更窄？</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>情景</th><th>可能性</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td><strong>更宽</strong></td><td><span class="tag tag-yellow">⚠️ 维持概率大</span></td><td>社区壁垒自我强化（内容存量更大、创作者生态更成熟）</td></tr>
+      <tr><td><strong>更窄</strong></td><td><span class="tag tag-yellow">⚠️ 有可能性</span></td><td>抖音/视频号持续蚕食中长视频市场，或AI改变内容消费方式</td></tr>
+      <tr><td><strong>上限</strong></td><td>不高</td><td>B站更可能是一个"小而美"的平台（类似豆瓣），而非腾讯/字节级别</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="section-subtitle">2. 如果股价跌一半，想买还是想跑？</h3>
+  <p>股价已从$36.40跌至$17.85（-51%）。如果再跌一半到$9：</p>
+  <div class="result-box warn"><strong>诚实回答：</strong>想跑的冲动可能大于想买的冲动。这不是"不懂装懂"，而是对B站的确定性还不够高——定价权缺失、用户天花板、游戏波动——这些问题在股价下跌时不会消失，反而会放大。</div>
+
+  <h3 class="section-subtitle">3. "能睡好觉吗？"</h3>
+  <div class="result-box fail">如果以当前价格全仓B站：<strong>不能踏实睡好觉</strong>。核心原因不是价格，而是对这个生意的理解还没有到"笃定"的程度。</div>
+</div>
+
+<!-- ===== 第九部分：迭代认知循环 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 7</span> 第九部分：迭代认知循环</h2>
+
+  <h3 class="section-subtitle">关键信号设置</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>信号</th><th>触发条件</th><th>如果为真→认知升级方向</th></tr></thead>
+    <tbody>
+      <tr><td><strong>游戏业务迎新爆款</strong></td><td>《三国：百将牌》或《三国志：王道天下》上线后表现超预期</td><td>游戏板块不再是短板，盈利预期上调</td></tr>
+      <tr><td><strong>AI投入见效</strong></td><td>AI广告收入持续高增长，同时成本可控</td><td>陈睿的"AI十倍机遇"判断被验证</td></tr>
+      <tr><td><strong>用户突破4亿MAU</strong></td><td>MAU突破4亿且保持增长</td><td>用户天花板被打破，长坡变长</td></tr>
+      <tr><td><strong>社区文化稀释加速</strong></td><td>弹幕质量下降、UP主流失</td><td>护城河在变窄→下调确定性</td></tr>
+      <tr><td><strong>大会员提价测试</strong></td><td>提价后付费用户维持或增长</td><td>定价权被重新评估</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="section-subtitle">下次检视时间</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>时间</th><th>检视重点</th></tr></thead>
+    <tbody>
+      <tr><td><strong>2026年8月</strong>（2026Q2财报）</td><td>广告增长趋势、游戏业务是否止跌</td></tr>
+      <tr><td><strong>2026年11月</strong>（2026Q3财报）</td><td>新游戏上线表现、用户增长趋势</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="section-subtitle">开放性问题（需在迭代中回答）</h3>
+  <ol style="margin-left:20px;">
+    <li><strong>B站的终极形态是什么？</strong> 中国的YouTube（广告为主）？中国的迪士尼（IP驱动）？还是"小而美"的社区？三种形态对应完全不同的估值体系。</li>
+    <li><strong>陈睿的"本分"能持续到什么程度？</strong> 如果盈利压力变大，他还能否坚持"不做贴片广告"的承诺？</li>
+    <li><strong>AI对B站是结构性利好还是短期故事？</strong> AI广告收入170%增长确实令人印象深刻——但基数小的因素有多大？</li>
+    <li><strong>段永平不会买B站的深层原因（推演）：</strong>B站缺失了段永平最看重的两个要素——<strong>一眼就能看出的好生意</strong>和<strong>强定价权</strong>。段永平的所有重仓案例（茅台、苹果、网易、泡泡玛特）都具备至少一个。B站两个都不具备。</li>
+  </ol>
+</div>
+
+<!-- ===== 第十部分：总结 ===== -->
+<div class="section">
+  <h2 class="section-title">第十部分：总结</h2>
+
+  <h3 class="section-subtitle">段永平面会说（模拟推演）</h3>
+  <blockquote>
+    <p>"这个公司我看了，商业模式不太懂。年轻人喜欢，这我看得出来。但它怎么赚钱？游戏业务老变，广告吧又没有议价权，用户交的钱也不多。我看不明白10年后它到底能赚多少钱。"</p>
+    <p>"陈睿这个人不错，感觉是个比较本分的人，不搞短期的东西。但这不是我要投他的理由。本分的人多了，我还得看生意好不好。"</p>
+    <p>"价格倒是不算贵，16倍PE吧。问题是如果生意不好，16倍也不算便宜。"</p>
+    <p>"总的来说，不在我的能力圈内。我选择就不碰了。"</p>
+  </blockquote>
+
+  <h3 class="section-subtitle">对投资者的参考</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>如果你</th><th>参考建议</th></tr></thead>
+    <tbody>
+      <tr><td><strong>段永平式纯价值投资者</strong></td><td><span class="tag tag-red">❌ 回避</span>——商业模式确定性不够，定价权缺失是结构性问题，不符合"好生意"标准</td></tr>
+      <tr><td><strong>对中国互联网有深入理解</strong></td><td><span class="tag tag-yellow">⚠️ 小仓位关注</span>——关键看游戏业务能否反转、用户天花板能否突破</td></tr>
+      <tr><td><strong>长期趋势投资者</strong></td><td><span class="tag tag-yellow">⚠️ 谨慎</span>——AI和广告增长是正面因素，但竞争格局和定价权是长期隐忧</td></tr>
+      <tr><td><strong>已持有B站</strong></td><td><span class="tag tag-yellow">⚠️ 持有但降低预期</span>——公司基本面在改善（首次盈利、FCF转正），但护城河和增长天花板限制了长期回报空间。如果仓位过大，可考虑减仓到"能睡好觉"的水平</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="section-subtitle">最终结论</h3>
+  <div class="result-box warn"><strong>B站不是一个"坏"公司，但它也不是段永平会"愿意花259亿全部买下来"的公司。</strong> 它介于中间——有一流的社区文化和用户粘性，但商业模式存在结构性弱点：</div>
+
+  <ol style="margin-left:20px;">
+    <li><span class="verdict-fail">❌ 弱定价权</span>——与茅台/苹果/泡泡玛特的核心差距</li>
+    <li><span class="verdict-fail">❌ 用户增长见顶</span>——坡不够长</li>
+    <li><span class="verdict-fail">❌ 净利率极低</span>——雪不够厚</li>
+    <li><span class="verdict-warn">⚠️ 游戏业务波动大</span>——拖累整体稳定性</li>
+    <li><span class="verdict-warn">⚠️ 造钟未完成</span>——高度依赖陈睿个人</li>
+  </ol>
+
+  <p>在段永平的框架里，确定性不是"可提升"的——它是投资的前提。没有它，再好的人也白搭。</p>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="report-footer">
+  分析依据：段永平知识库（dy/knowledge/）核心原语和框架。段永平没有直接评论过B站，以上分析是对其方法论的应用和推演，不代表段永平本人的观点。<br>
+  个人推论部分已与段永平原话明确区分，仅供参考，不构成投资建议。
+</div>
+
+</div>
+</body>
+</html>

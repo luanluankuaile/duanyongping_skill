@@ -132,6 +132,56 @@ Path B — 创始人优先型（泡泡玛特、早期苹果）：
 - `dy/knowledge/` 下的 6 个知识库文件（仅含段永平原话整理）
 - 网络搜索获取的股票基本面信息（需与段永平观点区分标注）
 
+## 报告输出格式
+
+**所有分析报告必须使用 HTML 格式输出**，不得使用 Markdown 格式。
+
+### 使用方式
+
+1. 从 `dy/reports/template.html` 读取 HTML 模板
+2. 将 `REPORT_TITLE` 替换为报告标题（格式如：`哔哩哔哩（BILI / 9626.HK）段永平方法论综合分析报告`）
+3. 将 `ANALYSIS_DATE` 替换为当前分析日期
+4. 将 `CURRENT_PRICE` 替换为当前股价/市值信息（如无可省略该 meta-item 整行）
+5. 将 `REPORT_BODY` 替换为完整的报告正文 HTML 内容
+6. 保存到 `dy/reports/` 目录下，文件名：`{公司名}分析报告.html`
+
+### HTML 样式指南
+
+报告正文中使用以下 CSS 类来保持样式一致：
+
+| 用途 | 推荐样式 |
+|------|---------|
+| **章节标题** | `<h2 class="section-title">` + `<span class="step-badge">Step N</span>` |
+| **子标题** | `<h3 class="section-subtitle">` |
+| **表格** | 标准 `<table>` 含 `<thead>` 和 `<tbody>`，包裹在 `<div class="table-wrapper">` 中 |
+| **判断结论** | 使用 `<span class="tag tag-green/red/yellow">` |
+| **通过/不通过** | `<span class="verdict-pass">✅ 通过</span>` / `<span class="verdict-fail">❌ 不通过</span>` |
+| **结果框** | `<div class="result-box pass/fail/warn/info">` |
+| **引用段永平原话** | `<blockquote>` |
+| **代码块/逻辑链** | `<div class="code-block">` — 支持 `.pass` `.fail` `.warn` `.dim` `.highlight` 子样式 |
+| **检查清单** | `<ul class="checklist">` + `<li><span class="icon pass/fail/warn">✅/❌/⚠️</span>` |
+| **卡片信息** | `<div class="card">` + `<h4>` 标题 |
+| **维度对比** | `<div class="dim-row">` + `<div class="dim-card">` |
+| **分隔线** | `<hr>` |
+
+### 内容转换规则
+
+| Markdown 原始写法 | HTML 对应写法 |
+|-----------------|--------------|
+| `## 标题` | `<h2 class="section-title">` |
+| `### 子标题` | `<h3 class="section-subtitle">` |
+| `| 表格 \|` | `<div class="table-wrapper"><table>` |
+| `> 引用` | `<blockquote>` |
+| `` ``` `` 代码块 | `<div class="code-block">` |
+| `- [ ] / - [x]` 清单 | `<ul class="checklist">` |
+| `---` | `<hr>` |
+| `**粗体**` | `<strong>` |
+| `✅ / ❌ / ⚠️` 等图标 | 保持原样或用对应语义类 |
+
+### 示例
+
+请参考 `dy/reports/哔哩哔哩分析报告.md` 的内容结构，将其转换为 HTML 格式输出。保持内容结构不变（Step 0→Step 7 的九步法流程），仅将格式从 Markdown 替换为 HTML。
+
 ## 知识库文件索引
 
 | 文件 | 在分析流程中的用途 |

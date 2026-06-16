@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>段永平方法论分析报告</title>
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  color: #1a1a2e;
+  background: #f5f6fa;
+  line-height: 1.75;
+}
+
+/* ===== Layout ===== */
+.report-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ===== Header ===== */
+.report-header {
+  text-align: center;
+  padding: 48px 32px 36px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 16px;
+  margin-bottom: 32px;
+  color: #e8e8e8;
+}
+.report-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.report-header .subtitle {
+  font-size: 1rem;
+  color: #a0c4ff;
+  margin-bottom: 20px;
+}
+.report-header .meta-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.report-header .meta-item {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  color: #c8d6e5;
+}
+.report-header .meta-item strong {
+  color: #ffffff;
+}
+
+/* ===== Sections ===== */
+.section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px 36px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid #eef1f5;
+}
+.section-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f3460;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e8edf3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .step-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #e94560, #0f3460);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+.section-subtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #16213e;
+  margin: 24px 0 12px;
+}
+.section-subtitle:first-child { margin-top: 0; }
+
+/* ===== Text ===== */
+p { margin-bottom: 12px; }
+p:last-child { margin-bottom: 0; }
+
+/* ===== Tables ===== */
+.table-wrapper { overflow-x: auto; margin-bottom: 16px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+thead th {
+  background: #f0f4f8;
+  color: #1a1a2e;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 2px solid #dce3ec;
+}
+tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eef1f5;
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #f8faff; }
+
+/* ===== Tags / Badges ===== */
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tag-green  { background: #d4edda; color: #155724; }
+.tag-red    { background: #f8d7da; color: #721c24; }
+.tag-yellow { background: #fff3cd; color: #856404; }
+.tag-blue   { background: #d1ecf1; color: #0c5460; }
+.tag-gray   { background: #e2e3e5; color: #383d41; }
+
+/* ===== Checklists ===== */
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  padding: 6px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.92rem;
+}
+.checklist li .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+.checklist li .icon.pass  { color: #28a745; }
+.checklist li .icon.fail  { color: #dc3545; }
+.checklist li .icon.warn  { color: #e9a600; }
+.checklist li .icon.neutral { color: #6c757d; }
+
+/* ===== Result boxes ===== */
+.result-box {
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin: 16px 0;
+  font-size: 0.92rem;
+  border-left: 4px solid;
+}
+.result-box.pass   { background: #e8f5e9; border-color: #28a745; color: #1e4620; }
+.result-box.fail   { background: #fbe9e7; border-color: #dc3545; color: #641e16; }
+.result-box.warn   { background: #fff8e1; border-color: #e9a600; color: #5d4037; }
+.result-box.info   { background: #e3f2fd; border-color: #1976d2; color: #0d3b66; }
+
+/* ===== Blockquotes ===== */
+blockquote {
+  margin: 16px 0;
+  padding: 14px 20px;
+  background: #f8f9fa;
+  border-left: 4px solid #0f3460;
+  border-radius: 0 8px 8px 0;
+  color: #2c3e50;
+  font-style: normal;
+}
+blockquote p { margin-bottom: 4px; }
+blockquote p:last-child { margin-bottom: 0; }
+
+/* ===== Code blocks ===== */
+.code-block {
+  background: #1a1a2e;
+  color: #e8e8e8;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 16px 0;
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+.code-block .pass { color: #69db7c; }
+.code-block .fail { color: #ff6b6b; }
+.code-block .warn { color: #ffd43b; }
+.code-block .dim  { color: #868e96; }
+.code-block .highlight { color: #74c0fc; }
+
+/* ===== Cards (for sub-sections) ===== */
+.card {
+  background: #f8faff;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 14px 0;
+}
+.card h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f3460;
+  margin-bottom: 8px;
+}
+.card p:last-child { margin-bottom: 0; }
+
+/* ===== Inline highlights ===== */
+.verdict-pass { color: #28a745; font-weight: 600; }
+.verdict-fail { color: #dc3545; font-weight: 600; }
+.verdict-warn { color: #e9a600; font-weight: 600; }
+
+/* ===== Dividers ===== */
+hr {
+  border: none;
+  border-top: 1px solid #e8edf3;
+  margin: 24px 0;
+}
+
+/* ===== Footer ===== */
+.report-footer {
+  text-align: center;
+  padding: 24px 32px;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: #8899aa;
+  border-top: 1px solid #e8edf3;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 720px) {
+  .report-container { padding: 16px 12px 40px; }
+  .report-header { padding: 28px 16px 24px; }
+  .report-header h1 { font-size: 1.4rem; }
+  .section { padding: 20px 16px; }
+  .section-title { font-size: 1.1rem; }
+  .meta-grid { flex-direction: column; align-items: center; }
+}
+
+/* ===== Print ===== */
+@media print {
+  body { background: #fff; }
+  .report-container { max-width: none; padding: 0; }
+  .section { box-shadow: none; break-inside: avoid; page-break-inside: avoid; }
+  .report-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .code-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== Dimension comparison ===== */
+.dim-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.dim-card {
+  flex: 1;
+  min-width: 200px;
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 1px solid #e8edf3;
+  background: #fafbfc;
+}
+.dim-card .dim-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #667788;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.dim-card .dim-score {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.dim-card .dim-note {
+  font-size: 0.85rem;
+  color: #667788;
+}
+</style>
+</head>
+<body>
+<div class="report-container">
+
+<!-- ===== HEADER ===== -->
+<div class="report-header">
+  <h1>REPORT_TITLE</h1>
+  <div class="subtitle">段永平方法论 · 综合分析报告</div>
+  <div class="meta-grid">
+    <div class="meta-item"><strong>分析依据</strong> 段永平投资问答录及网易博客原话整理</div>
+    <div class="meta-item"><strong>方法论版本</strong> v3.0 双路径决策模型 + 环境变化检测</div>
+    <div class="meta-item"><strong>分析日期</strong> ANALYSIS_DATE</div>
+    <div class="meta-item"><strong>当前股价</strong> CURRENT_PRICE</div>
+  </div>
+</div>
+
+<!-- ===== BODY ===== -->
+REPORT_BODY
+
+<!-- ===== FOOTER ===== -->
+<div class="report-footer">
+  本报告基于段永平方法论的应用和推演。引用段永平原话均来自知识库原文整理。<br>
+  个人推论部分已与段永平原话明确区分，仅供参考，不构成投资建议。
+</div>
+
+</div>
+</body>
+</html>

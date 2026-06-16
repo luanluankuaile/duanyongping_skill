@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>铖昌科技（001270）段永平方法论综合分析报告</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  color: #1a1a2e;
+  background: #f5f6fa;
+  line-height: 1.75;
+}
+.report-container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+.report-header {
+  text-align: center; padding: 48px 32px 36px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 16px; margin-bottom: 32px; color: #e8e8e8;
+}
+.report-header h1 { font-size: 2rem; font-weight: 700; color: #ffffff; letter-spacing: 2px; margin-bottom: 8px; }
+.report-header .subtitle { font-size: 1rem; color: #a0c4ff; margin-bottom: 20px; }
+.report-header .meta-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 16px; }
+.report-header .meta-item { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; color: #c8d6e5; }
+.report-header .meta-item strong { color: #ffffff; }
+.section {
+  background: #ffffff; border-radius: 12px; padding: 32px 36px; margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #eef1f5;
+}
+.section-title {
+  font-size: 1.35rem; font-weight: 700; color: #0f3460; margin-bottom: 20px;
+  padding-bottom: 10px; border-bottom: 2px solid #e8edf3;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title .step-badge {
+  display: inline-block; background: linear-gradient(135deg, #e94560, #0f3460);
+  color: #fff; font-size: 0.7rem; font-weight: 600; padding: 2px 10px;
+  border-radius: 20px; letter-spacing: 0.5px;
+}
+.section-subtitle { font-size: 1.1rem; font-weight: 600; color: #16213e; margin: 24px 0 12px; }
+.section-subtitle:first-child { margin-top: 0; }
+p { margin-bottom: 12px; }
+p:last-child { margin-bottom: 0; }
+.table-wrapper { overflow-x: auto; margin-bottom: 16px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+thead th { background: #f0f4f8; color: #1a1a2e; font-weight: 600; text-align: left; padding: 10px 14px; border-bottom: 2px solid #dce3ec; }
+tbody td { padding: 10px 14px; border-bottom: 1px solid #eef1f5; vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #f8faff; }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+.tag-green  { background: #d4edda; color: #155724; }
+.tag-red    { background: #f8d7da; color: #721c24; }
+.tag-yellow { background: #fff3cd; color: #856404; }
+.tag-blue   { background: #d1ecf1; color: #0c5460; }
+.tag-gray   { background: #e2e3e5; color: #383d41; }
+blockquote {
+  margin: 16px 0; padding: 14px 20px; background: #f8f9fa;
+  border-left: 4px solid #0f3460; border-radius: 0 8px 8px 0; color: #2c3e50;
+}
+blockquote p { margin-bottom: 4px; }
+blockquote p:last-child { margin-bottom: 0; }
+.code-block {
+  background: #1a1a2e; color: #e8e8e8; border-radius: 10px; padding: 18px 22px;
+  margin: 16px 0; font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  font-size: 0.85rem; line-height: 1.6; overflow-x: auto; white-space: pre;
+}
+.code-block .pass { color: #69db7c; }
+.code-block .fail { color: #ff6b6b; }
+.code-block .warn { color: #ffd43b; }
+.code-block .dim  { color: #868e96; }
+.code-block .highlight { color: #74c0fc; }
+.card {
+  background: #f8faff; border: 1px solid #e8edf3; border-radius: 10px;
+  padding: 18px 22px; margin: 14px 0;
+}
+.card h4 { font-size: 0.95rem; font-weight: 600; color: #0f3460; margin-bottom: 8px; }
+.verdict-pass { color: #28a745; font-weight: 600; }
+.verdict-fail { color: #dc3545; font-weight: 600; }
+.verdict-warn { color: #e9a600; font-weight: 600; }
+hr { border: none; border-top: 1px solid #e8edf3; margin: 24px 0; }
+.report-footer {
+  text-align: center; padding: 24px 32px; margin-top: 12px;
+  font-size: 0.8rem; color: #8899aa; border-top: 1px solid #e8edf3;
+}
+.result-box { padding: 16px 20px; border-radius: 10px; margin: 16px 0; font-size: 0.92rem; border-left: 4px solid; }
+.result-box.pass   { background: #e8f5e9; border-color: #28a745; color: #1e4620; }
+.result-box.fail   { background: #fbe9e7; border-color: #dc3545; color: #641e16; }
+.result-box.warn   { background: #fff8e1; border-color: #e9a600; color: #5d4037; }
+.result-box.info   { background: #e3f2fd; border-color: #1976d2; color: #0d3b66; }
+.dim-row { display: flex; gap: 20px; flex-wrap: wrap; margin: 16px 0; }
+.dim-card { flex: 1; min-width: 200px; padding: 16px 18px; border-radius: 10px; border: 1px solid #e8edf3; background: #fafbfc; }
+.dim-card .dim-name { font-size: 0.82rem; font-weight: 600; color: #667788; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.dim-card .dim-score { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+.dim-card .dim-note { font-size: 0.85rem; color: #667788; }
+@media (max-width: 720px) {
+  .report-container { padding: 16px 12px 40px; }
+  .report-header { padding: 28px 16px 24px; }
+  .report-header h1 { font-size: 1.4rem; }
+  .section { padding: 20px 16px; }
+  .section-title { font-size: 1.1rem; }
+  .meta-grid { flex-direction: column; align-items: center; }
+}
+@media print {
+  body { background: #fff; }
+  .report-container { max-width: none; padding: 0; }
+  .section { box-shadow: none; break-inside: avoid; page-break-inside: avoid; }
+  .report-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .code-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div class="report-container">
+
+<!-- ===== HEADER ===== -->
+<div class="report-header">
+  <h1>铖昌科技（001270）段永平方法论综合分析报告</h1>
+  <div class="subtitle">段永平方法论 · v3.0 综合分析报告</div>
+  <div class="meta-grid">
+    <div class="meta-item"><strong>分析依据</strong> 段永平投资问答录及网易博客原话整理（dy/knowledge/ 目录下6个文件）</div>
+    <div class="meta-item"><strong>方法论版本</strong> v3.0 双路径决策模型 + 环境变化检测</div>
+    <div class="meta-item"><strong>分析日期</strong> 2026-06-16</div>
+    <div class="meta-item"><strong>当前股价</strong> 121.84元（总市值约250亿元）</div>
+    <div class="meta-item"><strong>动态PE</strong> 约142倍（TTM）/ PE（2025A）约214倍</div>
+  </div>
+</div>
+
+<!-- ===== Step 0: 环境变化检测 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 0</span> 环境变化检测</h2>
+
+  <h3 class="section-subtitle">五维颠覆性信号扫描</h3>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">① 技术变革：AI/新技术对军工航天半导体行业的影响</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>评估</th></tr></thead>
+    <tbody>
+      <tr><td>半导体工艺演进</td><td>氮化镓（GaN）等第三代半导体材料逐步替代传统砷化镓，铖昌科技已有布局</td></tr>
+      <tr><td>AI对军工影响</td><td>AI改变雷达信号处理和电子对抗方式，但T/R芯片作为硬件基础层不受颠覆</td></tr>
+      <tr><td>相控阵技术迭代</td><td>从传统机械扫描到相控阵的转变已持续多年，铖昌处于技术前沿</td></tr>
+      <tr><td><strong>判断</strong></td><td><strong>改良性变化</strong>——技术迭代是渐进式的，铖昌科技处于有利赛道，没有被颠覆的风险</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">② 消费者行为变化</h4>
+  <p><strong>不适用。</strong> 铖昌科技是军工/航天B2B企业，终端客户是国家科研院所和军工集团，不直接面向消费者。"消费者行为变化"这个维度对于它没有意义。</p>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">③ 竞争格局变化</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>竞争因素</th><th>评估</th></tr></thead>
+    <tbody>
+      <tr><td>国内直接竞争者</td><td>国内能做宇航级相控阵T/R芯片的民营企业极少，铖昌是细分赛道龙头</td></tr>
+      <tr><td>潜在新进入者</td><td>军工资质壁垒极高（取证周期3-5年），新进入者短期内难以突破</td></tr>
+      <tr><td>国际竞争</td><td>国际限制对中国高端芯片出口，反而加速国产替代</td></tr>
+      <tr><td><strong>判断</strong></td><td><strong>竞争格局稳定甚至改善</strong>——国产替代趋势强化了铖昌的稀缺性地位</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">④ 监管/政策变化</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>政策维度</th><th>评估</th></tr></thead>
+    <tbody>
+      <tr><td>国防信息化</td><td>国家长期战略方向，政策持续支持</td></tr>
+      <tr><td>低轨卫星（星网工程）</td><td>GW星座+千帆星座加速组网，2026年是发射密集期</td></tr>
+      <tr><td>半导体自主可控</td><td>国产替代国家战略，政策力度持续加大</td></tr>
+      <tr><td>军工采购体制改革</td><td>可能影响订单节奏和利润率，属周期性变化</td></tr>
+      <tr><td><strong>判断</strong></td><td><strong>政策面持续利好</strong>——三重国家战略（国防+卫星+半导体）均为正向驱动</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">⑤ 全球化/供应链</h4>
+  <p>中美科技脱钩背景下，高端芯片国产替代需求迫切。铖昌科技是国内少数能做宇航级T/R芯片的企业，供应链自主可控。<strong>利好</strong>。</p>
+
+  <h3 class="section-subtitle">环境变化检测结论</h3>
+  <div class="code-block"><span class="dim">颠覆级别：</span><span class="pass">☑ 无颠覆 → 框架安全使用</span>
+          <span class="dim">□ 有变化但改良性</span>
+          <span class="dim">□ 结构性颠覆 → 框架外思考</span></div>
+  <div class="result-box pass">环境变化检测通过。技术迭代是渐进式的，竞争格局稳定，政策面持续利好。段永平没有评论过类似公司，不存在"引用过去判断的前提条件变化"问题。</div>
+</div>
+
+<!-- ===== Step 0.5: 公司类型判断 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 0.5</span> 公司类型判断</h2>
+
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>诊断问题</th><th>回答</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>这个生意的"好"是显而易见的吗？</td><td><span class="tag tag-yellow">⚠️ 不明显</span></td><td>毛利率82%✅ 但PE 142倍、经营现金流仍不稳定、客户集中95%，不是一眼能判断"好"的类型</td></tr>
+      <tr><td>创始人明天离职，3年后会怎样？</td><td><span class="tag tag-green">✅ 基本不受影响</span></td><td>铖昌不是创始人驱动的公司，控股股东是和而泰，核心技术来自团队而非个人</td></tr>
+      <tr><td>护城河是结构性还是依赖创始人？</td><td><span class="tag tag-green">✅ 结构性</span></td><td>军工资质+技术壁垒+客户关系都是结构性的，不依赖某个个人</td></tr>
+      <tr><td>模式在成熟还是新兴行业？</td><td><span class="tag tag-blue">新兴/成长中</span></td><td>低轨卫星通信+国防信息化，行业处于快速增长期</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="result-box pass"><strong>判断结果：A型（生意优先型）</strong><br><br>
+  <strong>为什么：</strong>铖昌科技的护城河是结构性的（军工资质、技术壁垒），不依赖创始人个人。控股股东是和而泰，管理层可替代。分析路径应从商业模式入手。<br><br>
+  <strong>⚠️ 一个重要提醒：</strong>A型公司要求"生意模式自明，护城河结构性强"，但铖昌科技的生意模式是否"自明"是有争议的——它处于军工B2B领域，不是消费者能直观感受的生意。段永平可能会说：<strong>"这个生意我看不懂"</strong>。分析中需高度关注能力圈问题。</div>
+</div>
+
+<!-- ===== Step 1: 排除测试 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 1</span> 排除测试</h2>
+
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>问题</th><th>判断</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>这个生意我真正懂吗？</td>
+        <td><span class="tag tag-red">🔴 高度不确定</span></td>
+        <td>铖昌科技的业务涉及相控阵雷达、毫米波T/R芯片、氮化镓工艺、宇航级芯片测试——都是高度专业的技术领域。看懂这家公司需要对军工电子产业链有深度理解。段永平说"看懂一家公司不会比读一个本科更容易"——这里需要的知识储备甚至超过本科水平。</td>
+      </tr>
+      <tr>
+        <td>生意模式一眼就能看出好吗？</td>
+        <td><span class="tag tag-yellow">⚠️ 有亮点有疑点</span></td>
+        <td><strong>亮点：</strong>毛利率82%、负债率6.5%、行业空间大（低轨卫星+国防信息化）。<strong>疑点：</strong>前五大客户占95%、经营现金流曾为负、PE 142倍、研发费用超过净利润（1.46亿 vs 1.17亿）。好与不好交织，不是"一眼好"。</td>
+      </tr>
+      <tr>
+        <td>管理层有不本分迹象吗？</td>
+        <td><span class="tag tag-green">✅ 无明显问题</span></td>
+        <td>曾因2024年亏损被*ST，但2025年年报后已申请摘帽。无财务造假、无大股东频繁套现、无关联交易掏空上市公司的公开记录。控股股东和而泰是上市公司，治理相对规范。</td>
+      </tr>
+      <tr>
+        <td>有致命Stop Doing违规吗？</td>
+        <td><span class="tag tag-green">✅ 无明显违规</span></td>
+        <td>军工企业的合规要求极高，铖昌未出现重大违规记录。但作为B2B军工企业，"Stop Doing"的可见度很低——外界很难判断是否有"做错的事"。</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="result-box warn"><strong>排除测试结论：⚠️ 有条件通过，但能力圈问题突出</strong><br><br>
+  <strong>第一项（懂不懂）是最核心的问题。</strong> 段永平反复强调：<strong>"知道自己的能力圈有多大往往比自己能力圈有多大要重要的多！"</strong> 铖昌科技处于高度专业的技术领域，如果你不是军工电子行业的专家，第一项就很难通过。<br><br>
+  从"排除测试"的角度，铖昌科技没有"一票否决"的问题（财务造假、管理层不本分、Stop Doing违规），但<strong>"懂不懂"这个前置条件可能已经指向了排除</strong>。</div>
+</div>
+
+<!-- ===== Step 2: 生意叙事 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 2</span> 生意叙事</h2>
+
+  <div class="result-box info">写不出300字说清这个生意怎么赚钱 = 没懂</div>
+
+  <p>铖昌科技是做<strong>微波毫米波相控阵T/R芯片</strong>的公司。简单说：相控阵雷达需要成百上千个"收发单元"（T/R通道），每个通道都需要一颗专用芯片来控制信号的发射和接收。铖昌就是设计和销售这种芯片的。</p>
+
+  <p><strong>怎么赚钱：</strong></p>
+  <ul>
+    <li>把芯片卖给军工集团和航天院所，用于星载雷达（低轨卫星）、机载雷达、地面雷达</li>
+    <li>定价模式是"产品成本+合理利润"的军工审价模式，毛利率82%（非常高）</li>
+    <li>2025年营收4.05亿，净利润1.17亿，毛利率72.68%（2026Q1进一步提升至82%）</li>
+  </ul>
+
+  <p><strong>为什么它能赚这个钱：</strong></p>
+  <ul>
+    <li>国内能做宇航级T/R芯片的民营企业极少——准入门槛极高（军工四证+技术积累）</li>
+    <li>一旦进入军工供应链，切换成本极高，客户关系稳定</li>
+    <li>低轨卫星（星网工程）正在密集组网，对T/R芯片的需求快速增长</li>
+  </ul>
+
+  <p><strong>最大的不确定性：</strong></p>
+  <ul>
+    <li>前五大客户占95%——极度集中，任何一个客户流失都是致命打击</li>
+    <li>经营现金流曾为负——赚的钱不一定都是真金白银（客户是军工院所，回款周期长）</li>
+    <li>研发费用占营收36%——必须持续大量投入才能维持技术领先，不是"躺着赚钱"的生意</li>
+  </ul>
+</div>
+
+<!-- ===== Step 3: 深度分析 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 3</span> 深度分析</h2>
+
+  <!-- 3-A: 商业模式 -->
+  <h3 class="section-subtitle">3-A：商业模式分析（权重40%，一票否决权）</h3>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">护城河分析</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>护城河类型</th><th>评估</th><th>段永平框架评价</th></tr></thead>
+    <tbody>
+      <tr><td><strong>技术壁垒</strong></td><td><span class="tag tag-green">强</span></td><td>宇航级T/R芯片设计能力，国内民企领先。但技术迭代快，需持续投入维持</td></tr>
+      <tr><td><strong>资质壁垒</strong></td><td><span class="tag tag-green">强</span></td><td>军工供货资质（四证齐全），新进入者取证周期3-5年，天然的准入屏障</td></tr>
+      <tr><td><strong>客户关系</strong></td><td><span class="tag tag-yellow">强但集中</span></td><td>与大型院所深度绑定，但前五大客户占95%，过度集中是风险</td></tr>
+      <tr><td><strong>品牌/声誉</strong></td><td><span class="tag tag-yellow">中等</span></td><td>在军工领域有品牌认知，但B2B领域的品牌溢价远弱于消费品</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote>
+    <p><strong>段永平说：</strong>"我觉得能形成长期垄断优势的企业是非常罕见的，国家垄断不算在内。"</p>
+  </blockquote>
+  <p>铖昌科技的护城河是<strong>真实但有瑕疵</strong>的。技术+资质+客户关系构成了一道较高的进入壁垒，但这道壁垒需要持续的高研发投入来维护，不是"一旦建立就能躺赚"的类型。而且客户过度集中（前5大占95%）是一个结构性的脆弱点。</p>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">差异化与定价权 ⭐（段永平最看重的维度）</h4>
+  <p><strong>段永平测试法：</strong>"如果竞争对手降价50%，核心客户会跑吗？"</p>
+
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>业务</th><th>定价权评估</th></tr></thead>
+    <tbody>
+      <tr><td><strong>T/R芯片销售</strong></td><td><span class="tag tag-yellow">⚠️ 中弱</span>——军工审价模式，价格受军方的成本核算制度约束，不是市场化定价。段永平说的"巨大的未使用的定价权"在这里不适用</td></tr>
+      <tr><td><strong>产品独特性</strong></td><td><span class="tag tag-green">中强</span>——国内能做宇航级T/R芯片的民企极少，具有一定议价能力，但受制于军工采购体系</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="result-box warn"><strong>结论：☑️ 定价权中等偏弱。</strong> 铖昌科技的定价不是市场化的，而是军工审价模式。"提价"这个行为在段永平的框架里是判断好生意的重要标准，但对铖昌这种B2G（面向政府/军队）公司，提价能力天然受限。这是与段永平喜欢的公司（茅台、苹果）最核心的差距之一。</div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">利润质量分析</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>指标</th><th>数据</th><th>评价</th></tr></thead>
+    <tbody>
+      <tr><td><strong>毛利率</strong></td><td>82.17%（2026Q1），72.68%（2025全年）</td><td><span class="tag tag-green">极高</span>——产品溢价能力强</td></tr>
+      <tr><td><strong>净利率</strong></td><td>43.05%（2026Q1），28.9%（2025全年）</td><td><span class="tag tag-green">高</span>——利润率水平优秀</td></tr>
+      <tr><td><strong>经营现金流</strong></td><td>2026Q1为-2095万元，2025全年转正</td><td><span class="tag tag-yellow">⚠️ 波动</span>——赚的钱不一定都是现金，受回款周期影响大</td></tr>
+      <tr><td><strong>预收款</strong></td><td>占比较低</td><td><span class="tag tag-red">没有预收款优势</span>——与茅台"先收钱后交货"的模式不同</td></tr>
+      <tr><td><strong>研发费用率</strong></td><td>36%（营收4.05亿，研发1.46亿）</td><td><span class="tag tag-yellow">⚠️ 极高</span>——利润靠高研发投入维持，不是"不再投入也能赚钱"的模式</td></tr>
+      <tr><td><strong>ROE</strong></td><td>2.91%（2026Q1），2025全年约11%</td><td><span class="tag tag-yellow">中等</span>——无高负债，ROE是真实的，但当前水平不高</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote>
+    <p><strong>段永平式判断：</strong>"有些公司多年以来全部利润再投入都不够，还要增发或举债，我会避开此类公司，哪怕利润表很漂亮。"</p>
+  </blockquote>
+  <p>铖昌科技的情况比"全部利润再投入都不够"好一些——2025年它是盈利的，但研发费用（1.46亿）超过了净利润（1.17亿）。也就是说，如果它停止研发投入，利润会很好看；但一旦停止，它的护城河就会消失。<strong>这是段永平不太喜欢的那种"需要持续烧钱才能守住位置"的生意模式。</strong></p>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">长坡厚雪</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr><td><strong>长坡（行业空间）</strong></td><td><span class="tag tag-green">✅ 坡够长</span>——低轨卫星（星网工程规划数千颗卫星）+ 国防信息化 + 国产替代，行业空间广阔，至少5-10年高景气</td></tr>
+      <tr><td><strong>厚雪（护城河+盈利）</strong></td><td><span class="tag tag-yellow">⚠️ 雪不够厚</span>——毛利率高，但客户高度集中、定价权受限、研发费用侵蚀利润，"雪"的厚度有结构性问题</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>长坡厚雪评分：长坡够长，但雪不够厚。</strong> 赛道空间大是真实利好，但盈利模式的结构性问题：客户集中 + 定价权受限 + 高研发依赖，让"雪"的积累不够稳。</p>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">一票否决信号检查</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>一票否决信号</th><th>铖昌科技情况</th></tr></thead>
+    <tbody>
+      <tr><td>产品严重同质化</td><td><span class="tag tag-green">❌ 不同质</span>——差异化明显（技术领先+军工资质）</td></tr>
+      <tr><td><strong>没有定价权</strong></td><td><span class="tag tag-yellow">⚠️ 中等偏弱</span>——有技术壁垒支撑一定定价权，但军工审价模式限制了提价空间</td></tr>
+      <tr><td>"性价比"是核心卖点</td><td><span class="tag tag-green">❌ 不是</span>——军工采购首要考虑性能和可靠性，不是价格</td></tr>
+      <tr><td>高负债+高ROE</td><td><span class="tag tag-green">❌ 不适用</span>——负债率6.5%，极低负债</td></tr>
+      <tr><td>重资产+低毛利</td><td><span class="tag tag-green">❌ 不适用</span>——轻资产设计公司，毛利82%</td></tr>
+      <tr><td>行业空间在缩小</td><td><span class="tag tag-green">❌</span>——行业空间在扩大（低轨卫星密集组网期）</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">商业模式综合评分</h4>
+  <div class="result-box warn"><strong>中等</strong>——有明显的结构性优势（技术壁垒、军工资质、行业景气），但存在三个核心弱点：<strong>①定价权受限（非市场化）②客户集中度极高（95%）③高研发依赖（36%营收再投入）</strong>。与段永平"好生意"的标准相比，差距明显。</div>
+
+  <hr>
+
+  <!-- 3-B: 企业文化 -->
+  <h3 class="section-subtitle">3-B：企业文化分析（权重35%，决定持续性）</h3>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">本分评估</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>评估</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>求责于己</strong></td><td><span class="tag tag-yellow">⚠️ 信息有限</span></td><td>公开信息中缺乏管理层自我反思的证据。2024年亏损后积极调整并扭亏，显示一定"求责于己"的迹象，但信号不够强</td></tr>
+      <tr><td><strong>不赚人便宜</strong></td><td><span class="tag tag-green">✅ 无明显问题</span></td><td>无相关负面记录，控股股东为上市公司（和而泰），治理相对规范</td></tr>
+      <tr><td><strong>平常心</strong></td><td><span class="tag tag-yellow">⚠️ 信息有限</span></td><td>处于高景气行业，是否追风口、炒概念——信息不足，无法判断</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">造钟人测试</h4>
+  <div class="code-block"><span class="dim">创始人今天退休 → 3年后公司表现？ → </span><span class="pass">影响有限（非创始人驱动，控股股东体系）</span></div>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">Stop Doing List（不为清单）——可见度低</h4>
+  <p>军工B2B企业与消费品公司不同，其"Stop Doing"的公开可见度极低。外界很难判断它是否有明确的"不为清单"。从已有信息看：</p>
+  <ul>
+    <li><span class="verdict-pass">✅</span> 无财务造假记录</li>
+    <li><span class="verdict-pass">✅</span> 无大股东频繁套现</li>
+    <li><span class="verdict-pass">✅</span> 经营合规性符合军工标准</li>
+    <li><span class="verdict-warn">⚠️</span> 但"本分"文化的信号远不如段永平偏好的消费品公司清晰</li>
+  </ul>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">企业文化总体评分</h4>
+  <div class="result-box warn"><strong>信息不足，难以评估。</strong> 这是B2B军工企业的天然特点——企业文化的外部可见度低，公众很难从外部判断管理层是否"本分"、是否有"平常心"。段永平投腾讯是因为"马化腾人不错"，投苹果是因为"the right people"——这些判断都基于大量的公开信息和长期的创始人观察。对铖昌科技，这种信任感很难建立起来。</div>
+
+  <hr>
+
+  <!-- 3-C: 价格/估值 -->
+  <h3 class="section-subtitle">3-C：价格/估值分析（权重25%，入场时机）</h3>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">"毛估估"框架</h4>
+  <p><strong>利润基础：</strong></p>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>指标</th><th>金额</th></tr></thead>
+    <tbody>
+      <tr><td>2025年归母净利润（实际）</td><td>1.17亿</td></tr>
+      <tr><td>2026年归母净利润（预测）</td><td>1.72亿（方正证券预测）</td></tr>
+      <tr><td>2027年归母净利润（预测）</td><td>2.41亿</td></tr>
+      <tr><td>2028年归母净利润（预测）</td><td>3.32亿</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><strong>段永平式毛估估：</strong></p>
+  <div class="code-block"><span class="dim">第一层：看PE</span>
+  当前市值约250亿
+  2025年净利润1.17亿 → PE约214倍
+  2026E净利润1.72亿 → PE约145倍
+  2028E净利润3.32亿 → PE约75倍
+
+  <span class="dim">段永平参考线：PE=12"可以了"，PE=15"长期平均"</span>
+  <span class="warn">→ 即使在最乐观的预测下（2028年），75倍PE仍然远超段永平的舒适区。</span>
+
+<span class="dim">第二层：机会成本比较</span>
+  vs 茅台（A股约25-30倍PE，确定性极高）→ 铖昌科技PE和确定性都远不如
+  vs 苹果（美股约25-28倍PE）→ 差距同样明显
+  vs 国债（无风险回报约2.5%）→ 250亿对应1.17亿利润，回报率约0.47%
+
+  <span class="fail">→ 无论和什么比，当前价格都不便宜。</span></div>
+
+  <blockquote>
+    <p><strong>段永平说：</strong>"我不买新股的。五六十倍pe的新股可真是需要勇气啊。"</p>
+  </blockquote>
+
+  <h4 style="margin:16px 0 8px;font-size:0.95rem;color:#16213e;">估值确定性等级</h4>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>维度</th><th>判断</th></tr></thead>
+    <tbody>
+      <tr><td>商业模式确定性</td><td>中等偏低（客户集中95%是最大风险，定价权受限）</td></tr>
+      <tr><td>企业文化确定性</td><td>低（信息不足，无法建立信任感）</td></tr>
+      <tr><td>行业前景确定性</td><td>中高（低轨卫星+国防信息化方向明确，但采购节奏不可控）</td></tr>
+      <tr><td><strong>综合确定性</strong></td><td><span class="tag tag-yellow">中等偏低</span></td></tr>
+      <tr><td><strong>估值等级</strong></td><td><span class="tag tag-red">太贵</span>——即使看到2028年，PE仍高达75倍，远超合理范围</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="result-box fail"><strong>⚠️ 段永平式判断的推演：</strong><br><br>
+  段永平会问："如果我把200多亿全部买下这个公司，10年后我能得到什么？"<br>
+  假设利润每年增长30%（非常乐观），10年后利润约16亿，对应16倍PE（段永平认为合理的长期PE），市值约256亿——和现在差不多。<br><br>
+  换句话说，即使一切顺利，以当前价格买入，<strong>10年回报可能接近零</strong>。这还没有考虑任何风险（客户流失、技术迭代、采购周期）。<br><br>
+  <strong>结论：当前价格明显高于段永平的合理估值范围。需要价格大幅下跌（或利润爆发式增长）才有安全边际。</strong></div>
+</div>
+
+<!-- ===== Step 4: 实地验证 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 4</span> 实地验证</h2>
+
+  <div class="result-box info">注意：铖昌科技是B2B军工企业，无法像消费品公司那样"用产品、看门店、聊用户"来验证。实地验证的方式和难度都与段永平分析消费品公司完全不同。</div>
+
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>验证层次</th><th>行动</th><th>发现</th></tr></thead>
+    <tbody>
+      <tr><td><strong>行业趋势验证</strong></td><td>查证低轨卫星产业进展</td><td>星网工程（GW星座）和千帆星座在2026年加速组网，多颗卫星已发射。国家对低轨卫星的投入是真实且持续<span class="verdict-pass">✅</span></td></tr>
+      <tr><td><strong>技术壁垒验证</strong></td><td>调研国内T/R芯片竞争格局</td><td>国内民营能做宇航级T/R芯片的企业极少（不超过5家），铖昌是其中技术积累最深、产品线最全的一家<span class="verdict-pass">✅</span></td></tr>
+      <tr><td><strong>订单验证</strong></td><td>查阅投资者互动和公告</td><td>公司表示"产品批量交付有序推进"，"多款适配下一代卫星的新产品已研发落地"——但B2B的订单可见度比消费品低得多<span class="verdict-warn">⚠️</span></td></tr>
+      <tr><td><strong>财务验证</strong></td><td>交叉验证利润质量</td><td>2026Q1经营现金流为负（-2095万），盈利能力和现金流的匹配度有待观察。研发费用超过净利润是其中最大的结构性疑虑<span class="verdict-warn">⚠️</span></td></tr>
+      <tr><td><strong>客户验证</strong></td><td>客户集中度分析</td><td>前五大客户占95%——这个数据本身就是最大的风险信号。如果丢掉任意一个大客户，收入就会断崖式下跌<span class="tag tag-red">🔴</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><strong>实地验证困难度：极高。</strong> 段永平的分析方法高度依赖"亲自体验产品、观察用户、感知品牌"，这些对铖昌科技都不适用。军工产品的外部信息极度有限，非行业人士几乎无法进行有效的实地验证。这是段永平方法论在军工B2B公司上面的<strong>方法论边界</strong>。</p>
+</div>
+
+<!-- ===== Step 5: 综合判断 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 5</span> 综合判断</h2>
+
+  <h3 class="section-subtitle">三维度方向一致性</h3>
+  <div class="dim-row">
+    <div class="dim-card">
+      <div class="dim-name">商业模式</div>
+      <div class="dim-score" style="color:#e9a600;">中等</div>
+      <div class="dim-note">护城河结构性但定价权受限，研发依赖高 <span style="color:#667788;">➡️</span> 稳定但有瑕疵</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-name">企业文化</div>
+      <div class="dim-score" style="color:#e9a600;">信息不足</div>
+      <div class="dim-note">B2B军工企业，外部可见度低，无法建立段永平式的"信任感"</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-name">价格</div>
+      <div class="dim-score" style="color:#dc3545;">太贵</div>
+      <div class="dim-note">PE 145-214倍，远超合理范围，安全边际极低</div>
+    </div>
+  </div>
+  <p><strong>三个维度方向不一致：</strong>商业模式"中等但有瑕疵"，企业文化"信息不足"，价格"太贵"。三个维度没有同时指向正面方向。</p>
+
+  <h3 class="section-subtitle">条件逻辑链总结</h3>
+  <div class="code-block"><span class="dim">Step 0: 环境变化检测 → </span><span class="pass">✅ 无颠覆，框架可用</span>
+<span class="dim">Step 0.5: 公司类型 → </span><span class="pass">✅ A型（生意优先型）</span>
+    ↓
+<span class="dim">Step 1: 排除测试 → </span><span class="warn">⚠️ 有条件通过（能力圈问题突出）</span>
+    ↓
+<span class="dim">Step 2: 生意叙事 → </span><span class="pass">✅ 能说清赚钱逻辑</span>
+    ↓
+<span class="dim">Step 3a: 商业模式 → </span><span class="warn">⚠️ 中等（有护城河但定价权弱、客户过度集中）</span>
+    ↓
+<span class="dim">Step 3b: 企业文化 → </span><span class="warn">⚠️ 信息不足（难以建立信任感）</span>
+    ↓
+<span class="dim">Step 3c: 价格 → </span><span class="fail">❌ 太贵（PE 145-214倍，零安全边际）</span>
+    ↓
+<span class="dim">Step 4: 实地验证 → </span><span class="warn">⚠️ 极高难度（B2B军工，外部信息有限）</span>
+    ↓
+<span class="dim">Step 5: 综合判断 → </span><span class="fail">📌 当前不适合投资——价格太贵+确定性不足+能力圈存疑</span></div>
+
+  <h3 class="section-subtitle">最终判断</h3>
+  <div class="code-block"><span class="dim">☐ 买入  ☐ 重仓  ☐ 关注（等待认知升级）  </span>
+<span class="fail">✅ 不投</span></div>
+</div>
+
+<!-- ===== Step 6: 10年视角验证 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 6</span> 10年视角验证</h2>
+
+  <h3 class="section-subtitle">1. 10年后护城河更宽还是更窄？</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>情景</th><th>可能性</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td><strong>更宽</strong></td><td><span class="tag tag-green">可能性不低</span></td><td>客户关系和经验积累自我强化，新竞争者更难进入。形成"技术和客户双壁垒的正循环"</td></tr>
+      <tr><td><strong>更窄</strong></td><td><span class="tag tag-yellow">⚠️ 有可能性</span></td><td>技术迭代（如新的半导体材料）颠覆现有技术路线，或新进入者（如大型半导体公司）通过收购进入赛道</td></tr>
+      <tr><td><strong>更可能的结果</strong></td><td>维持中等偏宽</td><td>护城河真实但不绝对——能守住，但很难大幅拓宽</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="section-subtitle">2. 如果股价跌一半，想买还是想跑？</h3>
+  <p>当前价121.84元。如果跌一半到约61元（市值约125亿）：</p>
+  <ul>
+    <li>对应2025年净利润PE约107倍——仍然很贵</li>
+    <li>对应2028年预测净利润PE约38倍——仍然偏高（段永平参考线PE=12-15）</li>
+    <li>即使跌一半，从估值角度看仍然不便宜</li>
+  </ul>
+  <div class="result-box warn"><strong>诚实回答：</strong>跌一半后可能开始关注，但仍然不会买入。因为问题不仅是价格——对这个生意的理解度（能力圈）没有因为价格下跌而提高。段永平说"安全边际实际上是理解度而不是价格"——只有懂了，价格才有意义。</div>
+
+  <h3 class="section-subtitle">3. "能睡好觉吗？"</h3>
+  <div class="result-box fail"><strong>不能。</strong> 核心原因有三：<strong>① 能力圈存疑</strong>——军工T/R芯片高度专业，非行业专家很难真懂；<strong>② 价格太贵</strong>——PE 145倍买入，任何风吹草动都可能导致大幅下跌；<strong>③ 信息不对称</strong>——B2G公司的透明度和可预测性远低于消费品公司，大客户订单的变化外部很难提前察觉。<br><br>
+  段永平说："对自己不够了解的公司，涨了也想卖跌了也想卖。" 铖昌科技就是这个状态。</div>
+</div>
+
+<!-- ===== Step 7: 迭代认知循环 ===== -->
+<div class="section">
+  <h2 class="section-title"><span class="step-badge">Step 7</span> 迭代认知循环</h2>
+
+  <div class="result-box info">本报告是基于现有公开信息的分析。认知是可以升级的——如果未来有新的信息改变了理解，可以重新评估。</div>
+
+  <h3 class="section-subtitle">关键信号设置</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>信号</th><th>触发条件</th><th>如果为真→认知升级方向</th></tr></thead>
+    <tbody>
+      <tr><td><strong>经营现金流持续转正</strong></td><td>连续2-3个季度经营现金流为正且增长</td><td>利润质量改善，确定性提升</td></tr>
+      <tr><td><strong>客户集中度下降</strong></td><td>前五大客户占比从95%降至80%以下</td><td>商业模式的结构性弱点减弱</td></tr>
+      <tr><td><strong>低轨卫星批量出货</strong></td><td>低轨卫星业务营收占总营收比例超过30%</td><td>第二增长曲线确认，行业空间打开</td></tr>
+      <tr><td><strong>股价大幅下跌（&gt;50%）</strong></td><td>股价从当前水平跌50%+，同时基本面没有恶化</td><td>价格进入合理或偏低区间</td></tr>
+      <tr><td><strong>券商覆盖增加</strong></td><td>更多卖方研究员开始覆盖，信息透明度提升</td><td>对行业的理解门槛降低</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="section-subtitle">开放性问题（需在迭代中回答）</h3>
+  <ol style="margin-left:20px;">
+    <li><strong>段永平的能力圈能否延伸到军工半导体？</strong> 段永平投过网易（游戏）、苹果（消费电子）、腾讯（互联网）——都是面向消费者的生意。军工B2B不是他熟悉的领域。这是分析中最大的方法论问题。</li>
+    <li><strong>"国家垄断不算在内"——铖昌的护城河算国家垄断吗？</strong> 段永平说过"国家垄断不算在内"。铖昌的护城河部分来自军工资质——这是政策性的壁垒。如果政策变化（如开放更多民营企业进入），护城河可能被削弱。</li>
+    <li><strong>高研发投入是"护城河的维护"还是"利润的侵蚀"？</strong> 这取决于你怎么看：段永平喜欢"不再投入也能赚钱"的生意，而铖昌必须持续烧研发费用。这是理解这个生意最关键的认知分歧点。</li>
+    <li><strong>它是否本质上是"一次性建设"逻辑？</strong> 低轨卫星一旦组网完成，后续维护需求远小于建设期——这意味着行业景气可能有高峰期和低谷期，而非"雪球越滚越大"的复利模型。</li>
+  </ol>
+
+  <h3 class="section-subtitle">下次检视时间</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>时间</th><th>检视重点</th></tr></thead>
+    <tbody>
+      <tr><td><strong>2026年8月</strong>（2026年中报）</td><td>经营现金流是否转正？客户集中度变化？低轨卫星业务收入占比？</td></tr>
+      <tr><td><strong>2026年10月</strong>（2026年三季报）</td><td>营收增长趋势、毛利率变化、新订单情况</td></tr>
+      <tr><td><strong>2027年4月</strong>（2026年年报）</td><td>全年数据验证——利润质量、现金流、客户结构变化</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ===== 总结 ===== -->
+<div class="section">
+  <h2 class="section-title">总结</h2>
+
+  <h3 class="section-subtitle">段永平面会说（模拟推演）</h3>
+  <blockquote>
+    <p>"这个公司我看不懂。做了什么东西？T/R芯片。用在哪儿？卫星和雷达。这个东西很专业，不是我这个外行人能搞明白的。"</p>
+    <p>"毛利率是挺高，82%呢。但它研发要花掉36%的收入，这就不太对了。我喜欢那种不用怎么再投入也能赚钱的公司。这个公司要一直投钱才能维持，万一技术换代了呢？"</p>
+    <p>"价格就更不用说了，200多倍PE。就算它每年增长30%，3年后还有70多倍。这怎么买？"</p>
+    <p>"而且客户太集中了，前五家占了95%，跑一家就完了。这种生意不踏实。"</p>
+    <p>"总的来说，<strong>不在我的能力圈内。我选择就不碰了。</strong>"</p>
+  </blockquote>
+
+  <h3 class="section-subtitle">对投资者的参考</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead><tr><th>如果你</th><th>参考建议</th></tr></thead>
+    <tbody>
+      <tr><td><strong>段永平式纯价值投资者</strong></td><td><span class="tag tag-red">❌ 回避</span>——不在能力圈内、价格太贵、信息透明度低。三个理由中的任何一个都足够跳过</td></tr>
+      <tr><td><strong>对军工半导体有深入理解</strong></td><td><span class="tag tag-yellow">⚠️ 关注但等价格</span>——如果你是真懂行的人，你能判断别人判断不了的风险和机会。但即使如此，当前PE 145倍仍然太贵</td></tr>
+      <tr><td><strong>看好低轨卫星赛道的投资者</strong></td><td><span class="tag tag-yellow">⚠️ 谨慎</span>——赛道好是真的，但好赛道和好投资是两回事。高估值意味着最乐观的预期已经被定价</td></tr>
+      <tr><td><strong>已持有铖昌科技</strong></td><td><span class="tag tag-yellow">⚠️ 检查仓位</span>——如果仓位过大（超过能"睡好觉"的水平），考虑减仓。这个公司的波动性极大（近1个月跌停、涨停交替出现），不是适合重仓持有的类型</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="section-subtitle">最终结论</h3>
+  <p>铖昌科技是一个<strong>处在好赛道上的好公司，但不是段永平框架中的"好投资"</strong>。</p>
+
+  <div class="dim-row">
+    <div class="dim-card">
+      <div class="dim-name">优势</div>
+      <div class="dim-score" style="color:#28a745;">✅</div>
+      <div class="dim-note">行业空间大（低轨卫星+国防信息化）<br>毛利率极高（82%）<br>技术壁垒+资质壁垒双保险<br>无负债、轻资产</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-name">劣势</div>
+      <div class="dim-score" style="color:#dc3545;">❌</div>
+      <div class="dim-note">定价权受限（军工审价模式）<br>客户集中95%<br>研发费用率36%侵蚀利润<br>经营现金流波动大</div>
+    </div>
+    <div class="dim-card">
+      <div class="dim-name">段永平框架判断</div>
+      <div class="dim-score" style="color:#e9a600;">⚠️</div>
+      <div class="dim-note">能力圈外 ❌<br>商业模式中等 ⚠️<br>企业文化可见度低 ⚠️<br>价格太贵 ❌</div>
+    </div>
+  </div>
+
+  <p>在段永平的框架中，铖昌科技在三个关键维度上都有问题：</p>
+  <ol style="margin-left:20px;">
+    <li><span class="verdict-fail">❌ 能力圈外</span>——"看懂一家公司不会比读一个本科更容易"，军工T/R芯片需要的是博士级别的理解</li>
+    <li><span class="verdict-fail">❌ 定价权受限</span>——"如果竞争对手降价50%，核心客户会跑吗？"——军工审价模式下，这个问题本身就问不出来，因为它不是市场化定价</li>
+    <li><span class="verdict-fail">❌ 价格太贵</span>——段永平说"五六十倍的新股需要勇气"，当前PE 145倍，即使看到3年后（2028年）仍有75倍</li>
+  </ol>
+
+  <p>这不是一个"等价格跌下来就可以买"的公司——因为核心问题不只是价格，而是<strong>能力圈</strong>。如果你不是军工电子行业的专家，价格跌再多，你依然看不懂。而段永平反复说：<strong>"安全边际实际上是理解度而不是价格。"</strong></p>
+
+  <div class="result-box info"><strong>最终评级：不投。</strong> 好赛道、好毛利率、但不在能力圈内、价格太贵。三个条件中哪怕只有一个不满足，段永平都不会出手——这里三个都不满足。</div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="report-footer">
+  分析依据：段永平知识库（dy/knowledge/）核心原语和框架。段永平没有直接评论过铖昌科技，以上分析是对其方法论的应用和推演，不代表段永平本人的观点。<br>
+  个人推论部分已与段永平原话明确区分，本报告中的"段永平可能会说"部分为模拟推演。数据来源包括公开财报、券商研报及财经媒体，仅供参考，不构成投资建议。<br><br>
+  数据来源：证券时报、富途牛牛、巨丰财经、同花顺、方正证券、东方财富等。
+</div>
+
+</div>
+</body>
+</html>
